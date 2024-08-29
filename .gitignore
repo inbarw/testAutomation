@@ -13,4 +13,10 @@ build/
 # Ignore pytest cache files
 .pytest_cache/
 __pycache__/
-
+# Python virtual environment configuration
+pyvenv.cfg
+# IDE and environment files
+.idea/
+*.pyc
+*.pyo
+*.pyd
