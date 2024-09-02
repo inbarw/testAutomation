@@ -9,7 +9,7 @@ class ConfirmationPage(Base):
 
     def get_confirmation_header_text(self):
         try:
-            self.wait_for_element_to_be_visible(self.confirmation_header)
+            self.wait_for_element_to_be_visible(self.confirmation_header, timeout=15)
             return self.find_element(*self.confirmation_header).text
         except NoSuchElementException:
             print("Confirmation header wasn't found")

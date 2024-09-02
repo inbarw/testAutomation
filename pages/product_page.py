@@ -4,7 +4,6 @@ from pages.base_page import Base
 class ProductPage(Base):
     def __init__(self, driver):
         super().__init__(driver)
-        self.product_size_option = (By.XPATH, "//label[contains(text(),'PRODUCT_SIZE')]")
         self.quantity_add_button = (By.CSS_SELECTOR, "button[name='plus']")
         self.quantity_remove_button = (By.CSS_SELECTOR, "button[name='minus']")
         self.add_to_cart_button = (By.CSS_SELECTOR, "button[name='add']")
@@ -24,7 +23,7 @@ class ProductPage(Base):
 
     def add_product_to_cart(self, size_quantity_dict):
         for size, quantity in size_quantity_dict.items():
-            product_size_locator = (self.product_size_option[0], self.product_size_option[1].replace("PRODUCT_SIZE", size))
+            product_size_locator = (By.XPATH, f"//label[contains(text(),\"{size}\")]")
             self.find_element(*product_size_locator).click()
             self.add_quantity(quantity)
             self.hover_over_element(*self.add_to_cart_button)

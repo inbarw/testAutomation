@@ -33,7 +33,7 @@ Ensure that you have the following installed on your system:
     ```
 3. Install the required packages:
     ```bash
-                
+    pip install requirements.txt       
     ```
 4. Ensure that the ChromeDriver is in your system's PATH, or specify the path in your test setup.
 

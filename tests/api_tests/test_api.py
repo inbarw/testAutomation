@@ -12,7 +12,7 @@ def test_create_new_pet():
 def test_find_pet_by_status():
   api_pet_store = APIPetStore(Config.BASE_URL, Config.HEADERS)
   pets_status = api_pet_store.find_pet_by_status(endpoint="findByStatus?status=available", headers={'Accept': 'application/json'})
-  assert pets_status[4]["name"] == "Doggie"
+  assert pets_status[4]["name"] == "Puff"
   print(pets_status[4])
 
 def test_find_pet_by_status_2():
