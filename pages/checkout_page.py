@@ -13,6 +13,7 @@ class CheckoutPage(Base):
         self.apartment_field = (By.CSS_SELECTOR, "input[name='address2']")
         self.postal_code_field = (By.CSS_SELECTOR, "input[name='postalCode']")
         self.city_field = (By.CSS_SELECTOR, "input[name='city']")
+        self.country_dropdown = (By.CSS_SELECTOR, "select[name='countryCode']")
         self.card_number_field = (By.CSS_SELECTOR, "input#number")
         self.expiration_field = (By.CSS_SELECTOR, "input#expiry")
         self.security_code_field = (By.CSS_SELECTOR, "input#verification_value")
@@ -21,7 +22,7 @@ class CheckoutPage(Base):
         self.pay_now_button = (By.ID, "checkout-pay-button")
         self.calculating_price_message = (By.XPATH, "//span[contains(text(),'Calculating')]")
         self.shipping_price = (By.XPATH, "//span[text()='£23.99']")
-        self.invalid_email_error = (By.XPATH, "//p[text()='Enter a valid email']")
+        self.invalid_field_error = (By.XPATH, "//p[text()='ERROR_TEXT']")
         self.payment_section = (By.CSS_SELECTOR, "section[aria-label='Payment']")
         self.card_number_iframe = (By.XPATH, "//div[@id='number']/iframe")
         self.expiry_iframe = (By.XPATH, "//div[@id='expiry']/iframe")
@@ -37,7 +38,7 @@ class CheckoutPage(Base):
         self.find_element(*self.contact_field).send_keys(contact_details)
 
     def chose_country(self, country):
-        return
+        self.select_dropdown_option(*self.country_dropdown, country)
 
     def fill_first_name(self, first_name):
         self.find_element(*self.first_name_field).send_keys(first_name)
@@ -87,15 +88,16 @@ class CheckoutPage(Base):
 
     def fill_name_on_card(self, name):
         self.switch_to_iframe(self.name_on_card_iframe)
-        self.find_element(*self.name_on_card_field).clear().send_keys(name)
+        name_on_card_element = self.find_element(*self.name_on_card_field)
+        name_on_card_element.clear()
+        name_on_card_element.send_keys(name)
         self.switch_to_default_iframe()
 
     def fill_payment(self, card_number, expiration_date, security_code, name_on_card):
         self.fill_card_number(card_number)
         self.fill_expiration_date(expiration_date)
         self.fill_security_code(security_code)
-        if name_on_card != "":
-            self.fill_name_on_card(name_on_card)
+        self.fill_name_on_card(name_on_card)
 
     def click_pay_now(self):
         self.find_element(*self.pay_now_button).click()
@@ -107,10 +109,10 @@ class CheckoutPage(Base):
         self.fill_payment(card_number, expiration_date, security_code, name_on_card)
         self.click_pay_now()
 
-    def validate_invalid_email_error(self):
+    def validate_invalid_field_error(self, error_text):
         try:
-            self.wait_for_element_to_be_visible(self.invalid_email_error)
-            return self.find_element(*self.invalid_email_error)
+            error_locator =(self.invalid_field_error[0], self.invalid_field_error[1].replace("ERROR_TEXT", error_text))
+            return self.find_element(*error_locator)
         except NoSuchElementException:
             return None
 

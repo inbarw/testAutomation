@@ -29,7 +29,7 @@ class ProductPage(Base):
             self.hover_over_element(*self.add_to_cart_button)
             self.find_element(*self.add_to_cart_button).click()
             self.wait_for_element_to_be_visible(self.close_cart_notification)
-            self.find_element(*self.close_cart_notification).click()
+            self.wait_for_element_to_be_clickable_and_click(self.close_cart_notification)
             self.remove_quantity(quantity)
 
 

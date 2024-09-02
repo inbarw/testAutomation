@@ -1,6 +1,7 @@
 from selenium.webdriver import ActionChains
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -32,3 +33,14 @@ class Base():
 
     def switch_to_default_iframe(self):
         self.driver.switch_to.default_content()
+
+    def select_dropdown_option(self, by: By, value: str, option: str):
+        dropdown_element = self.find_element(by, value)
+        select = Select(dropdown_element)
+        select.select_by_visible_text(option)
+
+    def wait_for_element_to_be_clickable_and_click(self, locator):
+        element = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(locator)
+        )
+        element.click()
